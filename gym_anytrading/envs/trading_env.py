@@ -190,44 +190,47 @@ class TradingEnv(gym.Env):
         )
     
     def render_all_pretty(self, title=None):
-        prices = self.prices
-        position_history = self._position_history
-        window_ticks = np.arange(len(position_history))
+        # Assuming self.prices, self._position_history, self._total_reward, and self._total_profit are defined
+        # And assuming Positions is an enum with Long and Short
 
-        short_ticks = []
-        long_ticks = []
-        for i, tick in enumerate(window_ticks):
-            if position_history[i] == Positions.Short:
-                short_ticks.append(tick)
-            elif position_history[i] == Positions.Long:
-                long_ticks.append(tick)
+        window_ticks = np.arange(len(self._position_history))
+        plt.figure(figsize=(12, 6))  # Set a larger figure size for better visibility
 
-        # Creating OHLC data for candlestick plot
-        ohlc = []
-        for i in range(len(prices)):
-            ohlc.append((i, prices[i], prices[i], prices[i], prices[i]))
+        # Plot prices with a more subtle line color and width for dashboard aesthetics
+        plt.plot(window_ticks, self.prices, color='dodgerblue', linewidth=2, label='Price')
 
-        # Plotting candlestick chart
-        fig, ax = plt.subplots(figsize=(10, 6))
-        candlestick_ohlc(ax, ohlc, width=0.6, colorup='g', colordown='r')
+        # Plot positions with distinct markers
+        # Using 'v' for short (downward pointing triangle) and '^' for long (upward pointing triangle)
+        # Adjusted for better visibility and dashboard aesthetics
+        short_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Short]
+        long_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Long]
 
-        # Plotting short and long positions
-        ax.plot(short_ticks, prices[short_ticks], 'ro', label='Short')
-        ax.plot(long_ticks, prices[long_ticks], 'go', label='Long')
+        plt.scatter(short_ticks, np.array(self.prices)[short_ticks], color='red', marker='v', s=100, label='Short Position', edgecolor='black')
+        plt.scatter(long_ticks, np.array(self.prices)[long_ticks], color='green', marker='^', s=100, label='Long Position', edgecolor='black')
 
+        # Title and subtitles with improved layout
         if title:
-            plt.title(title)
+            plt.title(title, fontsize=16, fontweight='bold')
 
-        plt.suptitle(
+        plt.suptitle("Trading Dashboard", fontsize=18, fontweight='bold')
+        plt.title(
             "Total Reward: %.6f" % self._total_reward + ' ~ ' +
-            "Total Profit: %.6f" % self._total_profit
+            "Total Profit: %.6f" % self._total_profit, 
+            loc='left', fontsize=12, style='italic'
         )
 
-        # Adding legend
-        plt.legend()
+        # Improve the legend
+        plt.legend(frameon=True, facecolor='white', framealpha=0.8, fontsize=10)
 
-        # Displaying the plot
-        plt.show()
+        # Enhancing the axis labels for better clarity
+        plt.xlabel('Time Ticks', fontsize=14, fontweight='bold')
+        plt.ylabel('Price', fontsize=14, fontweight='bold')
+
+        # Tweak grid and background for better readability
+        plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.7)
+        plt.gca().set_facecolor('whitesmoke')
+
+        plt.tight_layout()
 
     def close(self):
         plt.close()
