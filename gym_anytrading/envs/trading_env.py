@@ -191,17 +191,17 @@ class TradingEnv(gym.Env):
     
     def render_all_pretty(self, title=None):
         window_ticks = np.arange(len(self._position_history))
-        plt.figure(figsize=(12, 6))  # Set a larger figure size for better visibility
+        plt.figure(figsize=(12, 6))
 
         # Plot prices with a more subtle line color and width for dashboard aesthetics
-        plt.plot(window_ticks, self.prices, color='dodgerblue', linewidth=2, label='Price', zorder=1)
+        plt.plot(window_ticks, self.prices, color='#00ddff', linewidth=2, label='Price', zorder=1)
 
         # Using 'v' for short (downward pointing triangle) and '^' for long (upward pointing triangle)
         short_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Short]
         long_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Long]
 
-        plt.scatter(short_ticks, np.array(self.prices)[short_ticks], color='red', marker='v', s=100, label='Short Position', edgecolor='black', zorder=4)
-        plt.scatter(long_ticks, np.array(self.prices)[long_ticks], color='green', marker='^', s=100, label='Long Position', edgecolor='black', zorder=5)
+        plt.scatter(short_ticks, np.array(self.prices)[short_ticks], color='red', marker='v', s=100, label='Short Position', zorder=4)
+        plt.scatter(long_ticks, np.array(self.prices)[long_ticks], color='green', marker='^', s=100, label='Long Position', zorder=5)
 
         # Title and subtitles with improved layout
         if title:
@@ -214,7 +214,7 @@ class TradingEnv(gym.Env):
             loc='left', fontsize=12, style='italic'
         )
 
-        plt.legend(frameon=True, facecolor='white', framealpha=0.8, fontsize=10)
+        #plt.legend(frameon=True, facecolor='white', framealpha=0.8, fontsize=10)
 
         plt.xlabel('Time', fontsize=14, fontweight='bold')
         plt.ylabel('Price', fontsize=14, fontweight='bold')
@@ -223,7 +223,7 @@ class TradingEnv(gym.Env):
         plt.gca().set_facecolor('whitesmoke')
         plt.draw()
 
-        #plt.tight_layout()
+        plt.tight_layout()
 
     def close(self):
         plt.close()
