@@ -3,6 +3,7 @@ from enum import Enum
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mplfinance.original_flavor import candlestick_ohlc
 
 import gymnasium as gym
 
@@ -187,6 +188,46 @@ class TradingEnv(gym.Env):
             "Total Reward: %.6f" % self._total_reward + ' ~ ' +
             "Total Profit: %.6f" % self._total_profit
         )
+    
+    def render_all_pretty(self, title=None):
+        prices = self.prices
+        position_history = self._position_history
+        window_ticks = np.arange(len(position_history))
+
+        short_ticks = []
+        long_ticks = []
+        for i, tick in enumerate(window_ticks):
+            if position_history[i] == Positions.Short:
+                short_ticks.append(tick)
+            elif position_history[i] == Positions.Long:
+                long_ticks.append(tick)
+
+        # Creating OHLC data for candlestick plot
+        ohlc = []
+        for i in range(len(prices)):
+            ohlc.append((i, prices[i], prices[i], prices[i], prices[i]))
+
+        # Plotting candlestick chart
+        fig, ax = plt.subplots(figsize=(10, 6))
+        candlestick_ohlc(ax, ohlc, width=0.6, colorup='g', colordown='r')
+
+        # Plotting short and long positions
+        ax.plot(short_ticks, prices[short_ticks], 'ro', label='Short')
+        ax.plot(long_ticks, prices[long_ticks], 'go', label='Long')
+
+        if title:
+            plt.title(title)
+
+        plt.suptitle(
+            "Total Reward: %.6f" % self._total_reward + ' ~ ' +
+            "Total Profit: %.6f" % self._total_profit
+        )
+
+        # Adding legend
+        plt.legend()
+
+        # Displaying the plot
+        plt.show()
 
     def close(self):
         plt.close()
