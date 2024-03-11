@@ -207,7 +207,7 @@ class TradingEnv(gym.Env):
         if title:
             plt.title(title, fontsize=16, fontweight='bold')
 
-        plt.suptitle("Trading Dashboard", fontsize=18, fontweight='bold')
+        #plt.suptitle("Trading Dashboard", fontsize=18, fontweight='bold')
         plt.title(
             "Total Reward: %.6f" % self._total_reward + ' ~ ' +
             "Total Profit: %.6f" % self._total_profit, 
@@ -216,7 +216,7 @@ class TradingEnv(gym.Env):
 
         plt.legend(frameon=True, facecolor='white', framealpha=0.8, fontsize=10)
 
-        plt.xlabel('Time Ticks', fontsize=14, fontweight='bold')
+        plt.xlabel('Time', fontsize=14, fontweight='bold')
         plt.ylabel('Price', fontsize=14, fontweight='bold')
 
         plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.7)
