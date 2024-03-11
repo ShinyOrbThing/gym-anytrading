@@ -190,23 +190,18 @@ class TradingEnv(gym.Env):
         )
     
     def render_all_pretty(self, title=None):
-        # Assuming self.prices, self._position_history, self._total_reward, and self._total_profit are defined
-        # And assuming Positions is an enum with Long and Short
-
         window_ticks = np.arange(len(self._position_history))
         plt.figure(figsize=(12, 6))  # Set a larger figure size for better visibility
 
         # Plot prices with a more subtle line color and width for dashboard aesthetics
-        plt.plot(window_ticks, self.prices, color='dodgerblue', linewidth=2, label='Price')
+        plt.plot(window_ticks, self.prices, color='dodgerblue', linewidth=2, label='Price', zorder=1)
 
-        # Plot positions with distinct markers
         # Using 'v' for short (downward pointing triangle) and '^' for long (upward pointing triangle)
-        # Adjusted for better visibility and dashboard aesthetics
         short_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Short]
         long_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Long]
 
-        plt.scatter(short_ticks, np.array(self.prices)[short_ticks], color='red', marker='v', s=100, label='Short Position', edgecolor='black')
-        plt.scatter(long_ticks, np.array(self.prices)[long_ticks], color='green', marker='^', s=100, label='Long Position', edgecolor='black')
+        plt.scatter(short_ticks, np.array(self.prices)[short_ticks], color='red', marker='v', s=100, label='Short Position', edgecolor='black', zorder=2)
+        plt.scatter(long_ticks, np.array(self.prices)[long_ticks], color='green', marker='^', s=100, label='Long Position', edgecolor='black', zorder=3)
 
         # Title and subtitles with improved layout
         if title:
@@ -219,18 +214,15 @@ class TradingEnv(gym.Env):
             loc='left', fontsize=12, style='italic'
         )
 
-        # Improve the legend
         plt.legend(frameon=True, facecolor='white', framealpha=0.8, fontsize=10)
 
-        # Enhancing the axis labels for better clarity
         plt.xlabel('Time Ticks', fontsize=14, fontweight='bold')
         plt.ylabel('Price', fontsize=14, fontweight='bold')
 
-        # Tweak grid and background for better readability
         plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.7)
         plt.gca().set_facecolor('whitesmoke')
 
-        plt.tight_layout()
+        #plt.tight_layout()
 
     def close(self):
         plt.close()
