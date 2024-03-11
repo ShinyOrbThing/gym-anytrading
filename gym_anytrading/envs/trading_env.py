@@ -194,7 +194,7 @@ class TradingEnv(gym.Env):
         plt.figure(figsize=(12, 6))
 
         # Plot prices with a more subtle line color and width for dashboard aesthetics
-        plt.plot(window_ticks, self.prices, color='#00ddff', linewidth=2, label='Price', zorder=1)
+        plt.plot(window_ticks, self.prices, color='##1f77b4', linewidth=2, label='Price', zorder=1)
 
         # Using 'v' for short (downward pointing triangle) and '^' for long (upward pointing triangle)
         short_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Short]
