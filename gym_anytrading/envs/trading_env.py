@@ -200,8 +200,8 @@ class TradingEnv(gym.Env):
         short_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Short]
         long_ticks = [tick for i, tick in enumerate(window_ticks) if self._position_history[i] == Positions.Long]
 
-        plt.scatter(short_ticks, np.array(self.prices)[short_ticks], color='red', marker='v', s=100, label='Short Position', edgecolor='black', zorder=2)
-        plt.scatter(long_ticks, np.array(self.prices)[long_ticks], color='green', marker='^', s=100, label='Long Position', edgecolor='black', zorder=3)
+        plt.scatter(short_ticks, np.array(self.prices)[short_ticks], color='red', marker='v', s=100, label='Short Position', edgecolor='black', zorder=4)
+        plt.scatter(long_ticks, np.array(self.prices)[long_ticks], color='green', marker='^', s=100, label='Long Position', edgecolor='black', zorder=5)
 
         # Title and subtitles with improved layout
         if title:
@@ -221,6 +221,7 @@ class TradingEnv(gym.Env):
 
         plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.7)
         plt.gca().set_facecolor('whitesmoke')
+        plt.draw()
 
         #plt.tight_layout()
 
