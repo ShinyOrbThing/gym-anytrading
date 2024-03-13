@@ -34,7 +34,7 @@ class StocksEnv(TradingEnv):
 
     def _calculate_reward(self, action):
         ''' This reward function only considers long positions really, even though it has the option for
-        short position. Long position reward calculated as expected.'''
+        short position. Long position reward calculated as expected. Reward isn't applied to long position until a sell action'''
         step_reward = 0
 
         trade = False
@@ -70,7 +70,11 @@ class StocksEnv(TradingEnv):
 
             if self._position == Positions.Long:
                 shares = (self._total_profit * (1 - self.trade_fee_ask_percent)) / last_trade_price
+                print("SOLD!!"+"-"*150)
+                print("shares:", shares)
                 self._total_profit = (shares * (1 - self.trade_fee_bid_percent)) * current_price
+                print("total profit", self._total_profit)
+
 
     def max_possible_profit(self):
         current_tick = self._start_tick
