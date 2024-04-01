@@ -70,10 +70,8 @@ class StocksEnv(TradingEnv):
 
             if self._position == Positions.Long:
                 shares = (self._total_profit * (1 - self.trade_fee_ask_percent)) / last_trade_price
-                print("SOLD!!"+"-"*150)
-                print("shares:", shares)
+
                 self._total_profit = (shares * (1 - self.trade_fee_bid_percent)) * current_price
-                print("total profit", self._total_profit)
 
 
     def max_possible_profit(self):
